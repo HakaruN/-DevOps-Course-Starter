@@ -7,11 +7,33 @@
     <p class="lead">Just another to-do app.</p>
   </div>
 
+  <div class="form">
+    <form action="{{url_for('addItem')}}" method="post">
+      <label>Title</label>
+      <input name="title">
+      <button>Submit</button>
+    </form>
+  </div>
+
+  <div class="addItem">
+    <h2></h2>
+    <form action="http://127.0.0.1:5000/addForm" method="POST">
+      <label>Title</label>
+      <input title>
+      <button>Submit</button>
+    </form>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        <body>
+          {% for entry in items %}
+            <h3>{{entry.id}} {{": "}} {{entry.title}}</h3>
+            <p>"Status: " {{entry.status}}</p>
+          {% endfor %}
+        </body>
       </ul>
     </div>
   </div>
