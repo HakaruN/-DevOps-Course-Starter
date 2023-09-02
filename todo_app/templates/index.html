@@ -7,34 +7,73 @@
     <p class="lead">Just another to-do app.</p>
   </div>
 
-  <div class="form">
+  <div class="addCard">
+    <H2>Add card</H2>
     <form action="{{url_for('addItem')}}" method="post">
-      <label>Title</label>
-      <input name="title">
+      <label>Name: </label>
+      <input name="name">
+      <label>Description:</label>
+      <input name="description">
       <button>Submit</button>
     </form>
+    <H1></H1>
   </div>
 
-  <div class="addItem">
-    <h2></h2>
-    <form action="http://127.0.0.1:5000/addForm" method="POST">
-      <label>Title</label>
-      <input title>
-      <button>Submit</button>
-    </form>
-  </div>
 
-  <div class="row">
+  <div class="Todo">
     <div class="col-md-12">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
+      <h2>Todo:</h2>
+      <ul display: block; class="list-group mb-8">
         <body>
-          {% for entry in items %}
-            <h3>{{entry.id}} {{": "}} {{entry.title}}</h3>
-            <p>"Status: " {{entry.status}}</p>
+          {% for card in todo %}
+          <div class={{card.name}}>
+            <div class="text">
+              <h3>Name:  {{card.name}}</h3>
+              <h3>Description: {{card.desc}}</h3>
+            </div>
+            <div class="buttons">
+              <form action="{{url_for('changeStatusByName')}}?name={{card.name}}&status={{doneID}}" method="post">          
+                <button name="Move to done" value="name: {{card.name}}">Move to done</button>
+              </form>
+            </div>
+          </div>
           {% endfor %}
         </body>
       </ul>
     </div>
   </div>
+
+  <div class="Done">
+    <div class="col-md-12">
+      <h2>Done:</h2>
+      <ul class="list-group mb-4">
+        <body>
+          {% for card in done %}
+          <div class={{card.name}}>
+            <div class="text">
+              <h3>"Name: " {{card.name}}</h3>
+              <h3>"Title: " {{card.title}}</h3>
+              <p>"Status: " {{card.status}}</p>
+            </div>
+            <div class="buttons">
+              <form action="{{url_for('changeStatusByName')}}?name={{card.name}}&status={{todoID}}" method="post">                
+                
+                <button name="Move to todo" value="name: {{card.name}}">Move to todo</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </body>
+      </ul>
+    </div>
+  </div>
+
+  <div class="Clear cards">
+    <H2>Delete all card</H2>
+    <form action="{{url_for('delAllItems')}}" method="post">
+      <button>Delete all</button>
+    </form>
+    <H1></H1>
+  </div>
+
 {% endblock %}

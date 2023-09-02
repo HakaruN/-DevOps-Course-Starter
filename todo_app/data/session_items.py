@@ -1,10 +1,19 @@
 from flask import session
-
+import todo_app.data.trelloRequests
 _DEFAULT_ITEMS = [
     { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
     { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
 ]
 
+
+_TRELLO_ITEMS = []
+
+
+def update_items():
+    boardID = "645106104aeafb96fe026623"
+    cards = todo_app.data.trelloRequests.get_cards(boardID)
+    for i in range(0,len(c/b/snhxHvkv/devopsboardards)):
+        _TRELLO_ITEMS.append({"id":i, "trelloId":cards[i]["id"], "status":"Not Started", "title": cards[i]["name"]})
 
 def get_items():
     """
@@ -13,7 +22,11 @@ def get_items():
     Returns:
         list: The list of saved items.
     """
-    return session.get('items', _DEFAULT_ITEMS.copy())
+    #return session.get('items', _DEFAULT_ITEMS.copy())
+    #return session.get('items', _TRELLO_ITEMS.copy())
+    print(_TRELLO_ITEMS)
+    return _TRELLO_ITEMS
+    
 
 
 def get_item(id):
@@ -49,7 +62,8 @@ def add_item(title):
 
     # Add the item to the list
     items.append(item)
-    session['items'] = items
+    #session['items'] = items
+    _TRELLO_ITEMS = items
 
     return item
 
@@ -67,3 +81,11 @@ def save_item(item):
     session['items'] = updated_items
 
     return item
+
+"""
+update_items()
+get_items()
+add_item("Hello")
+print("sdafasdf")
+get_items()
+"""
