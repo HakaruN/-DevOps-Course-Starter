@@ -1,6 +1,20 @@
 import requests
 import json
 
+class Board():
+    def __init__(self, id):
+        self.m_id = id
+
+class List():
+    def __init__(self,id, name):
+        self.m_id = id
+        self.m_name = name
+
+class Card():
+    def __init__(self, id, name, description):
+        self.m_id = id
+        self.m_name = name
+        self.m_desc = description
 
 
 ############Boards###############
@@ -73,22 +87,12 @@ def add_Card(boardID, listID, cardName, cardDescription):
     return sendRequest("POST", url, headers, query)
 
 
-def change_List_By_ID(boardID, cardID, listID):
-    cards = get_Cards_By_Board(boardID)
+
+def change_List(boardID, card, listID):
+    url = "https://trello.com/1/cards/" + card.m_id
     headers = {"Accept": "application/json"}
     query = {'key': "45423e137951812569d019961fb403c2", 'token' : "ATTA2b3a7034386c06e9d26162ffd749f17a2cb130a57bbbd92c4e08bbb59a85efa3023E78E6", 'idList' : listID}
-    url = "https://trello.com/1/cards/" + cardID
     return sendRequest("PUT", url, headers=headers, query=query)
-    
-
-def change_List_By_Name(boardID, cardName, listID):
-    cards = get_Cards_By_Board(boardID)
-    headers = {"Accept": "application/json"}
-    for card in cards:
-        if card['name'] == cardName:
-            query = {'key': "45423e137951812569d019961fb403c2", 'token' : "ATTA2b3a7034386c06e9d26162ffd749f17a2cb130a57bbbd92c4e08bbb59a85efa3023E78E6", 'idList' : listID}
-            url = "https://trello.com/1/cards/" + card['id']
-            return sendRequest("PUT", url, headers=headers, query=query)
 
 ##############helper functions###############
 def sendRequest(reqType ,url, headers, query):

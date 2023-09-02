@@ -17,7 +17,16 @@ doneID = "64f1e683328cb18730751208"
 @app.route('/')
 @app.route('/index')
 def index():    
-    return render_template('index.html', boardID=boardID, todoID=todoID, doneID=doneID, todo=get_Cards_By_List(todoID), done=get_Cards_By_List(doneID))
+    cardsTodo = []
+    for c in get_Cards_By_List(todoID):
+        cardsTodo.append(Card(c['id'], c['name'], c['desc']))
+
+    cardsDone = []
+    for c in get_Cards_By_List(doneID):
+        cardsDone.append(Card(c['id'], c['name'], c['desc']))
+
+    #return render_template('index.html', boardID=boardID, todoID=todoID, doneID=doneID, todo=get_Cards_By_List(todoID), done=get_Cards_By_List(doneID))
+    return render_template('index.html', boardID=boardID, todoID=todoID, doneID=doneID, todo=cardsTodo, done=cardsDone)
 
 @app.route('/addCard', methods=['POST'])
 def addItem():
@@ -35,17 +44,11 @@ def delAllItems():
     clear_Cards_By_Board(boardID)
     return redirect(url_for('index'))
 
-@app.route('/changeDone', methods=['POST', 'GET'])
-def changeStatusByID():
-    change_List_By_ID(boardID, "asd", doneID)
-    return redirect(url_for('index'))
 
 @app.route('/changeTodo', methods=['POST', 'GET'])
-def changeStatusByName():
+def changeStatus():
     args = request.args.to_dict()
-    print(args)
-    cardName = args['name']
+    card = Card(args['id'], args['name'], args['desc'])
     cardDest = args['status']
-    print("Card name: " + cardName + ", card dest: " + cardDest)
-    change_List_By_Name(boardID, cardName, cardDest)
+    change_List(boardID, card, cardDest)
     return redirect(url_for('index'))
